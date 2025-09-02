@@ -1,0 +1,10 @@
+{
+  "id": "haxe-test-plugin",
+  "name": "Haxe Text Plugin",
+  "author": "David Main",
+  "authorUrl": "https://github.com/nickmain",
+  "version": "0.1",
+  "minAppVersion": "1.9",
+  "description": "A test plugin written in Haxe",
+  "isDesktopOnly": true
+}
