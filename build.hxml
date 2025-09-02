@@ -1,0 +1,5 @@
+--class-path src
+--js bin/plugin/main.js
+-D js-es=6
+--macro nullSafety("epistem", Strict)
+epistem.TestPlugin
