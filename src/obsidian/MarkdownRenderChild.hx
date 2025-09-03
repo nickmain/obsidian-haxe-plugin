@@ -5,7 +5,7 @@ import js.html.HtmlElement;
 @:jsRequire("obsidian", "Plugin")
 extern class MarkdownRenderChild extends Component {
 
-    var containerEl (default, null): HtmlElement;
+    final containerEl: HtmlElement;
 
     /**
      * @param containerEl - This HTMLElement will be used to test whether this component is still alive.

@@ -4,9 +4,9 @@ import js.html.HtmlElement;
 
 interface MarkdownPostProcessorContext {
 
-    public var docId (default, null): String;
-    public var sourcePath (default, null): String;    
-    public var frontmatter (default, null): Null<Dynamic>;
+    public final docId: String;
+    public final sourcePath: String;
+    public final frontmatter: Null<Dynamic>;
 
     /**
      * Adds a child component that will have its lifecycle managed by the renderer.
@@ -19,7 +19,7 @@ interface MarkdownPostProcessorContext {
     /**
      * Gets the section information of this element at this point in time.
      * Only call this function right before you need this information to get the most up-to-date version.
-     * This function may also return null in many circumstances; 
+     * This function may also return null in many circumstances;
      * if you use it, you must be prepared to deal with nulls.
      */
     public function getSectionInfo(el: HtmlElement): Null<MarkdownSectionInformation>;

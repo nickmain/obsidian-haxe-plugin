@@ -5,11 +5,17 @@ import js.html.HtmlElement;
 import js.html.MouseEvent;
 
 @:jsRequire("obsidian", "Plugin")
-extern abstract class Plugin {
+extern abstract class Plugin extends Component {
+
+    final app: App;
+    final manifest: PluginManifest;
+
+    function new(app: App, manifest: PluginManifest);
+
     abstract function onload(): Promise<Void>;
     abstract function onunload(): Void;
 
-    final function loadData(): Promise<Dynamic>;
+    final function loadData(): Promise<Any>;
     final function saveData(data: Dynamic): Promise<Void>;
 
     /**
@@ -18,9 +24,22 @@ extern abstract class Plugin {
      * will be passed to the handler, and is expected to be filled with custom elements.
      */
     function registerMarkdownCodeBlockProcessor(
-        language: String, 
-        handler: (source: String, el: HtmlElement, ctx: MarkdownPostProcessorContext) -> Promise<Void>, 
+        language: String,
+        handler: (source: String, el: HtmlElement, ctx: MarkdownPostProcessorContext) -> Promise<Void>,
         ?sortOrder: Float): MarkdownPostProcessor;
 
     function addRibbonIcon(icon: String, title: String, callback: (evt: MouseEvent) -> Void): HtmlElement;
+
+    /**
+     * Adds a status bar item to the bottom of the app.
+     * Not available on mobile.
+     */
+    function addStatusBarItem(): HtmlElement;
+
+    /**
+     * Register a command globally.
+     * Registered commands will be available from the @{link https://help.obsidian.md/Plugins/Command+palette Command pallete}.
+     * The command id and name will be automatically prefixed with this plugin's id and name.
+     */
+    function addCommand(command: Command): Command;
 }
