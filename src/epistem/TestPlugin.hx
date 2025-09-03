@@ -35,7 +35,7 @@ class TestPlugin extends Plugin {
     }
 
     function simpleCommand() {
-        new Notice("Simple Command Executed", 2000);
+        new SampleModal(this.app).open();
     }
 
     function simpleEditorCommand(editor: Editor, view: MarkdownView) {
@@ -85,7 +85,6 @@ class TestPlugin extends Plugin {
 // TODO: Add a markdown post processor example
 // TODO: Add an editor command example
 // TODO: Add suggestion handler
-// TODO: Add status bar item example
 // TODO: Add modal dialog example
 // TODO: Add file system access example
 // TODO: Add timer interval example
