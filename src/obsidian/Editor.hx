@@ -4,6 +4,7 @@ typedef EditorPosition = { line: Float, ch: Float }
 typedef EditorSelection = { anchor: EditorPosition, head: EditorPosition }
 typedef EditorSelectionOrCaret = { anchor: EditorPosition, ?head: EditorPosition }
 typedef EditorRange = { from: EditorPosition, to: EditorPosition }
+typedef EditorRangeOrCaret = { from: EditorPosition, ?to: EditorPosition }
 typedef EditorChange = EditorRangeOrCaret & { text: String }
 typedef EditorTransaction = {
     ?replaceSelection: String,

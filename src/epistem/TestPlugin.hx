@@ -21,6 +21,7 @@ class TestPlugin extends Plugin {
         registerMarkdownCodeBlockProcessor("csv", processCSVBlock);
         setUpStatusBar();
         addCommand({id: "simple-command", name: "Simple Command", callback: simpleCommand});
+        addCommand({id: "simple-edit-command", name: "Simple Edit Command", editorCallback: simpleEditorCommand});
 
         return loadSettings();
     }
@@ -35,6 +36,10 @@ class TestPlugin extends Plugin {
 
     function simpleCommand() {
         new Notice("Simple Command Executed", 2000);
+    }
+
+    function simpleEditorCommand(editor: Editor, view: MarkdownView) {
+        editor.replaceSelection("Hello from Haxe!");
     }
 
     function setUpStatusBar() {

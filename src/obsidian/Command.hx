@@ -1,5 +1,7 @@
 package obsidian;
 
+import haxe.extern.EitherType;
+
 typedef Command = {
     /**
      * Globally unique ID to identify this command.
@@ -40,23 +42,23 @@ typedef Command = {
      * If checking is false, then this function should perform the action.
      * @returns Whether this command can be executed at the moment.
      */
-    final ?checkCallback: (checking: Bool) -> Null<Bool>;
+    final ?checkCallback: (checking: Bool) -> EitherType<Bool, Void>;
 
     /**
      * A command callback that is only triggered when the user is in an editor.
      * Overrides `callback` and `checkCallback`
      */
-    final ?editorCallback: (editor: Editor, ctx: MarkdownView | MarkdownFileInfo) -> Any;
+    final ?editorCallback: (editor: Editor, ctx: EitherType<MarkdownView, MarkdownFileInfo>) -> Void;
 
     /**
      * A command callback that is only triggered when the user is in an editor.
      * Overrides `editorCallback`, `callback` and `checkCallback`
      */
-    // editorCheckCallback?: (checking: boolean, editor: Editor, ctx: MarkdownView | MarkdownFileInfo) => boolean | void;
+    final ?editorCheckCallback: (checking: Bool, editor: Editor, ctx: EitherType<MarkdownView, MarkdownFileInfo>) -> EitherType<Bool, Void>;
 
     /**
      * Sets the default hotkey. It is recommended for plugins to avoid setting default hotkeys if possible,
      * to avoid conflicting hotkeys with one that's set by the user, even though customized hotkeys have higher priority.
      */
-    // hotkeys?: Hotkey[];
+    final ?hotkeys: Array<Hotkey>;
 }
