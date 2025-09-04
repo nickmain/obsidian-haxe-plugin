@@ -42,4 +42,10 @@ extern abstract class Plugin extends Component {
      * The command id and name will be automatically prefixed with this plugin's id and name.
      */
     function addCommand(command: Command): Command;
+
+    /**
+     * Register a settings tab, which allows users to change settings.
+     * @see {@link https://docs.obsidian.md/Plugins/User+interface/Settings#Register+a+settings+tab}
+     */
+    function addSettingTab(settingTab: PluginSettingTab): Void;
 }

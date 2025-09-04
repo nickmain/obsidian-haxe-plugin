@@ -1,6 +1,6 @@
 {
   "id": "haxe-test-plugin",
-  "name": "Haxe Text Plugin",
+  "name": "Haxe Test Plugin",
   "author": "David Main",
   "authorUrl": "https://github.com/nickmain",
   "version": "0.1",

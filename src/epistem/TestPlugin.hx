@@ -4,15 +4,22 @@ import obsidian.*;
 import js.html.HtmlElement;
 import js.html.MouseEvent;
 import js.lib.Promise;
+import js.lib.Object;
+
+typedef Settings = {
+    var mySetting: String;
+}
 
 @:expose("default")
 class TestPlugin extends Plugin {
     var statusBarElement: Null<HtmlElement>;
     var ribbonClickCount: Int;
+    public var settings: Settings;
 
 	public function new(app: App, manifest: PluginManifest) {
 		super(app, manifest);
         ribbonClickCount = 0;
+        settings = { mySetting: "default" };
 	}
 
     public function onload(): Promise<Void> {
@@ -22,6 +29,7 @@ class TestPlugin extends Plugin {
         setUpStatusBar();
         addCommand({id: "simple-command", name: "Simple Command", callback: simpleCommand});
         addCommand({id: "simple-edit-command", name: "Simple Edit Command", editorCallback: simpleEditorCommand});
+        addSettingTab(new SampleSettingTab(app, this));
 
         return loadSettings();
     }
@@ -31,7 +39,13 @@ class TestPlugin extends Plugin {
     }
 
     function loadSettings(): Promise<Void> {
-        return loadData().then((_) -> {});
+        return loadData().then((data) -> {
+            Object.assign(settings, data);
+        });
+    }
+
+    public function saveSettings(): Promise<Void> {
+        return saveData(settings);
     }
 
     function simpleCommand() {
@@ -79,13 +93,9 @@ class TestPlugin extends Plugin {
     }
 }
 
-// TODO: HTMLElement instead of HtmlElement where applicable
 // TODO: Add Any instead of dynamic
-// TODO: Add settings save/load and a settings tab UI
 // TODO: Add a markdown post processor example
-// TODO: Add an editor command example
 // TODO: Add suggestion handler
-// TODO: Add modal dialog example
 // TODO: Add file system access example
 // TODO: Add timer interval example
 // TODO: Add DOM event handler example

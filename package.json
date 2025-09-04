@@ -4,6 +4,6 @@
 	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
 	"scripts": {
 		"Haxe Build": "haxe build.hxml",
-        "Deploy Plugins": "cp -f bin/plugin/main.js '/Users/nickmain/Library/Mobile Documents/iCloud~md~obsidian/Documents/testbed/.obsidian/plugins/haxe-test-plugin/main.js'"
+        "Deploy Plugins": "cp -f bin/plugin/* '/Users/nickmain/Library/Mobile Documents/iCloud~md~obsidian/Documents/testbed/.obsidian/plugins/haxe-test-plugin'"
 	}
 }
