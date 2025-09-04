@@ -1,6 +1,6 @@
 package obsidian;
 
-typedef EditorPosition = { line: Float, ch: Float }
+typedef EditorPosition = { line: Int, ch: Int }
 typedef EditorSelection = { anchor: EditorPosition, head: EditorPosition }
 typedef EditorSelectionOrCaret = { anchor: EditorPosition, ?head: EditorPosition }
 typedef EditorRange = { from: EditorPosition, to: EditorPosition }
@@ -45,10 +45,10 @@ interface Editor {
     function refresh(): Void;
     function getValue(): String;
     function setValue(content: String): Void;
-    function getLine(line: Float): String;
-    function setLine(n: Float, text: String): Void;
-    function lineCount(): Float;
-    function lastLine(): Float;
+    function getLine(line: Int): String;
+    function setLine(n: Int, text: String): Void;
+    function lineCount(): Int;
+    function lastLine(): Int;
     function getSelection(): String;
     function somethingSelected(): Bool;
     function getRange(from: EditorPosition, to: EditorPosition): String;
@@ -70,10 +70,10 @@ interface Editor {
     function exec(command: EditorCommandName): Void;
     function transaction(tx: EditorTransaction, ?origin: String): Void;
     function wordAt(pos: EditorPosition): Null<EditorRange>;
-    function posToOffset(pos: EditorPosition): Float;
-    function offsetToPos(offset: Float): EditorPosition;
+    function posToOffset(pos: EditorPosition): Int;
+    function offsetToPos(offset: Int): EditorPosition;
 
-    function processLines<T>(read: (line: Float, lineText: String) -> Null<T>,
-                             write: (line: Float, lineText: Float, value: Null<T>) -> EditorChange,
+    function processLines<T>(read: (line: Int, lineText: String) -> Null<T>,
+                             write: (line: Int, lineText: Int, value: Null<T>) -> EditorChange,
                              ?ignoreEmpty: Bool): Void;
 }

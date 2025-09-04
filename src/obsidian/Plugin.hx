@@ -48,4 +48,9 @@ extern abstract class Plugin extends Component {
      * @see {@link https://docs.obsidian.md/Plugins/User+interface/Settings#Register+a+settings+tab}
      */
     function addSettingTab(settingTab: PluginSettingTab): Void;
+
+    /**
+     * Register an EditorSuggest which can provide live suggestions while the user is typing.
+     */
+    function registerEditorSuggest(editorSuggest: EditorSuggest<Any>): Void;
 }

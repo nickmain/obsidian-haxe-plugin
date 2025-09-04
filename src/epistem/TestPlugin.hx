@@ -24,6 +24,7 @@ class TestPlugin extends Plugin {
 
     public function onload(): Promise<Void> {
         trace("Plugin loaded");
+        registerEditorSuggest(new SampleSuggester(this));
         addRibbonIcon("hand-metal", manifest.name, handleRibbonClick);
         registerMarkdownCodeBlockProcessor("csv", processCSVBlock);
         setUpStatusBar();
@@ -95,8 +96,8 @@ class TestPlugin extends Plugin {
 
 // TODO: Add Any instead of dynamic
 // TODO: Add a markdown post processor example
-// TODO: Add suggestion handler
 // TODO: Add file system access example
 // TODO: Add timer interval example
 // TODO: Add DOM event handler example
 // TODO: Add code block that renders an image
+// TODO: Canvas plugin example
