@@ -1,5 +1,13 @@
 package obsidian;
 
+import obsidian.Events.EventRef;
+import obsidian.Events.AddEventListenerOptions;
+import js.html.Event;
+import js.html.Window;
+import js.html.Document;
+import js.html.HtmlElement;
+import haxe.extern.EitherType;
+
 extern class Component {
 
     /**
@@ -40,22 +48,14 @@ extern class Component {
     /**
      * Registers an event to be detached when unloading
      */
-    // function registerEvent(eventRef: EventRef): Void;
+    function registerEvent(eventRef: EventRef): Void;
 
     /**
      * Registers an DOM event to be detached when unloading
      */
-    // function registerDomEvent<K extends keyof WindowEventMap>(el: Window, type: K, callback: (this: HtmlElement, ev: WindowEventMap[K]) => any, options?: boolean | AddEventListenerOptions): Void;
-
-    /**
-     * Registers an DOM event to be detached when unloading
-     */
-    // function registerDomEvent<K extends keyof DocumentEventMap>(el: Document, type: K, callback: (this: HtmlElement, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): Void;
-
-    /**
-     * Registers an DOM event to be detached when unloading
-     */
-    // function registerDomEvent<K extends keyof HTMLElementEventMap>(el: HTMLElement, type: K, callback: (this: HtmlElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): Void;
+    @:overload(function(el: Window, type: String, callback: (ev: Event) -> Void, ?options: EitherType<Bool, AddEventListenerOptions>): Void {})
+    @:overload(function(el: Document, type: String, callback: (ev: Event) -> Void, ?options: EitherType<Bool, AddEventListenerOptions>): Void {})
+    function registerDomEvent(el: HtmlElement, type: String, callback: (ev: Event) -> Void, ?options: EitherType<Bool, AddEventListenerOptions>): Void;
 
     /**
      * Registers an interval (from setInterval) to be cancelled when unloading

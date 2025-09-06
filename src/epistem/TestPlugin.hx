@@ -1,5 +1,6 @@
 package epistem;
 
+import obsidian.Files.TAbstractFile;
 import obsidian.*;
 import js.html.HtmlElement;
 import js.html.MouseEvent;
@@ -31,6 +32,7 @@ class TestPlugin extends Plugin {
         addCommand({id: "simple-command", name: "Simple Command", callback: simpleCommand});
         addCommand({id: "simple-edit-command", name: "Simple Edit Command", editorCallback: simpleEditorCommand});
         addSettingTab(new SampleSettingTab(app, this));
+        app.vault.on(Modify, handleFileChange);
 
         return loadSettings();
     }
@@ -49,12 +51,20 @@ class TestPlugin extends Plugin {
         return saveData(settings);
     }
 
+    function handleFileChange(file: TAbstractFile): Void {
+        trace('File changed: ${file.path}');
+    }
+
     function simpleCommand() {
         new SampleModal(this.app).open();
     }
 
     function simpleEditorCommand(editor: Editor, view: MarkdownView) {
-        editor.replaceSelection("Hello from Haxe!");
+        final files = app.vault.getAllLoadedFiles();
+        var cursor = editor.getCursor();
+        for (file in files) {
+            editor.replaceRange("\n- " + file.name + " " + file.path, cursor);
+        }
     }
 
     function setUpStatusBar() {
@@ -101,3 +111,5 @@ class TestPlugin extends Plugin {
 // TODO: Add DOM event handler example
 // TODO: Add code block that renders an image
 // TODO: Canvas plugin example
+// TODO: Protocol handler example
+// TODO: CodeMirror editor extension example

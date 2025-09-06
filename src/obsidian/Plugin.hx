@@ -53,4 +53,6 @@ extern abstract class Plugin extends Component {
      * Register an EditorSuggest which can provide live suggestions while the user is typing.
      */
     function registerEditorSuggest(editorSuggest: EditorSuggest<Any>): Void;
+
+    function registerView(type: String, viewCreator: (leaf: WorkspaceLeaf) -> View): Void;
 }

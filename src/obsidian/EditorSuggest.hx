@@ -2,6 +2,7 @@ package obsidian;
 
 import js.lib.Promise;
 import haxe.extern.EitherType;
+import obsidian.Files.TFile;
 
 typedef EditorSuggestTriggerInfo = {
     /** The start position of the triggering text. This is used to position the popover. */

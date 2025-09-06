@@ -7,7 +7,7 @@ import js.html.KeyboardEvent;
 import haxe.extern.EitherType;
 import obsidian.EditorSuggest.EditorSuggestContext;
 import obsidian.Editor;
-import obsidian.TFile;
+import obsidian.Files.TFile;
 import obsidian.EditorSuggest.EditorSuggestTriggerInfo;
 
 class SampleSuggester extends EditorSuggest<String> {
