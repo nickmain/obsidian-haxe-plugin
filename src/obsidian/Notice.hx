@@ -1,11 +1,11 @@
 package obsidian;
 
 import js.html.DocumentFragment;
-import js.html.HtmlElement;
+import js.html.Element;
 
 @:jsRequire("obsidian", "Notice")
 extern class Notice {
-    public final noticeEl: HtmlElement;
+    public final noticeEl: Element;
 
     @:overload(function(message: DocumentFragment, ?duration: Float): Notice {})
     public function new(message: String, ?duration: Float);

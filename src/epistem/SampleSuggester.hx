@@ -1,7 +1,7 @@
 package epistem;
 
 import obsidian.EditorSuggest;
-import js.html.HtmlElement;
+import js.html.Element;
 import js.html.MouseEvent;
 import js.html.KeyboardEvent;
 import haxe.extern.EitherType;
@@ -25,7 +25,7 @@ class SampleSuggester extends EditorSuggest<String> {
 		return ["Apples", "Oranges", "Bananas", "Grapes"];
 	}
 
-	function renderSuggestion(text: String, el: HtmlElement) {
+	function renderSuggestion(text: String, el: Element) {
 		final span = el.ownerDocument.createSpanElement();
 		span.innerText = text;
 		el.appendChild(span);

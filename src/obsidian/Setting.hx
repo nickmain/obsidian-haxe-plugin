@@ -6,7 +6,7 @@ import js.html.ButtonElement;
 import js.lib.Promise;
 import js.html.InputElement;
 import js.html.DocumentFragment;
-import js.html.HtmlElement;
+import js.html.Element;
 import haxe.extern.EitherType;
 
 
@@ -38,13 +38,13 @@ extern class AbstractTextComponent<T> extends ValueComponent<String> {
 
 @:jsRequire("obsidian", "TextComponent")
 extern class TextComponent extends AbstractTextComponent<InputElement> {
-    function new(containerEl: HtmlElement);
+    function new(containerEl: Element);
 }
 
 @:jsRequire("obsidian", "ButtonComponent")
 extern class ButtonComponent extends BaseComponent {
     final buttonEl: ButtonElement;
-    // constructor(containerEl: HTMLElement);
+    // constructor(containerEl: Element);
     function setDisabled(disabled: Bool): ButtonComponent;
     function setCta(): ButtonComponent;
     function removeCta(): ButtonComponent;
@@ -58,8 +58,8 @@ extern class ButtonComponent extends BaseComponent {
 
 @:jsRequire("obsidian", "ProgressBarComponent")
 extern class ExtraButtonComponent extends BaseComponent {
-    final extraSettingsEl: HtmlElement;
-    // constructor(containerEl: HTMLElement);
+    final extraSettingsEl: Element;
+    // constructor(containerEl: Element);
     function setDisabled(disabled: Bool): ExtraButtonComponent;
     function setTooltip(tooltip: String, ?options: TooltipOptions): ExtraButtonComponent;
     function setIcon(icon: String): ExtraButtonComponent;
@@ -68,8 +68,8 @@ extern class ExtraButtonComponent extends BaseComponent {
 
 @:jsRequire("obsidian", "ToggleComponent")
 extern class ToggleComponent extends ValueComponent<Bool> {
-    final toggleEl: HtmlElement;
-    // constructor(containerEl: HTMLElement);
+    final toggleEl: Element;
+    // constructor(containerEl: Element);
     function setDisabled(disabled: Bool): ToggleComponent;
     function getValue(): Bool;
     function setValue(on: Bool): ToggleComponent;
@@ -80,8 +80,8 @@ extern class ToggleComponent extends ValueComponent<Bool> {
 
 @:jsRequire("obsidian", "ProgressBarComponent")
 extern class DropdownComponent extends ValueComponent<String> {
-    final selectEl: HtmlElement;
-    // constructor(containerEl: HTMLElement);
+    final selectEl: Element;
+    // constructor(containerEl: Element);
     function setDisabled(disabled: Bool): DropdownComponent;
     function addOption(value: String, display: String): DropdownComponent;
     // addOptions(options: Record<String, String>): DropdownComponent;
@@ -96,7 +96,7 @@ typedef HSL = { h: Int, s: Int, l: Int };
 
 @:jsRequire("obsidian", "ColorComponent")
 extern class ColorComponent extends ValueComponent<String> {
-    // constructor(containerEl: HTMLElement);
+    // constructor(containerEl: Element);
     function setDisabled(disabled: Bool): ColorComponent;
     function getValue(): HexString;
     function getValueRgb(): RGB;
@@ -111,8 +111,8 @@ enum abstract SliderStep(String) { var Any = "any"; }
 
 @:jsRequire("obsidian", "SliderComponent")
 extern class SliderComponent extends ValueComponent<Float> {
-    final sliderEl: HtmlElement;
-    // constructor(containerEl: HTMLElement);
+    final sliderEl: Element;
+    // constructor(containerEl: Element);
     function setDisabled(disabled: Bool): SliderComponent;
     function setLimits(min: Float, max: Float, step: EitherType<Float, SliderStep>): SliderComponent;
     function getValue(): Float;
@@ -125,19 +125,19 @@ extern class SliderComponent extends ValueComponent<Float> {
 
 @:jsRequire("obsidian", "TextAreaComponent")
 extern class TextAreaComponent extends AbstractTextComponent<TextAreaElement> {
-    // constructor(containerEl: HTMLElement);
+    // constructor(containerEl: Element);
 }
 
 @:jsRequire("obsidian", "SearchComponent")
 extern class SearchComponent extends AbstractTextComponent<InputElement> {
-    final clearButtonEl: HtmlElement;
-    // constructor(containerEl: HTMLElement);
+    final clearButtonEl: Element;
+    // constructor(containerEl: Element);
    function onChanged(): Void;
 }
 
 @:jsRequire("obsidian", "ProgressBarComponent")
 extern class ProgressBarComponent extends ValueComponent<Float> {
-    // constructor(containerEl: HTMLElement);
+    // constructor(containerEl: Element);
     function getValue(): Float;
     function setValue(value: Float): ProgressBarComponent;
 }
@@ -147,14 +147,14 @@ typedef TooltipOptions = { ?placement: TooltipPlacement, ?delay: Float }
 
 @:jsRequire("obsidian", "Setting")
 extern class Setting {
-    final settingEl: HtmlElement;
-    final infoEl: HtmlElement;
-    final nameEl: HtmlElement;
-    final descEl: HtmlElement;
-    final controlEl: HtmlElement;
+    final settingEl: Element;
+    final infoEl: Element;
+    final nameEl: Element;
+    final descEl: Element;
+    final controlEl: Element;
     final components: Array<BaseComponent>;
 
-    function new(containerEl: HtmlElement);
+    function new(containerEl: Element);
 
     function setName(name: EitherType<String, DocumentFragment>): Setting;
     function setDesc(desc: EitherType<String, DocumentFragment>): Setting;

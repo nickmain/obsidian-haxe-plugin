@@ -1,7 +1,7 @@
 package obsidian;
 
 import js.lib.Promise;
-import js.html.HtmlElement;
+import js.html.Element;
 import js.html.MouseEvent;
 
 @:jsRequire("obsidian", "Plugin")
@@ -25,16 +25,16 @@ extern abstract class Plugin extends Component {
      */
     function registerMarkdownCodeBlockProcessor(
         language: String,
-        handler: (source: String, el: HtmlElement, ctx: MarkdownPostProcessorContext) -> Promise<Void>,
+        handler: (source: String, el: Element, ctx: MarkdownPostProcessorContext) -> Promise<Void>,
         ?sortOrder: Float): MarkdownPostProcessor;
 
-    function addRibbonIcon(icon: String, title: String, callback: (evt: MouseEvent) -> Void): HtmlElement;
+    function addRibbonIcon(icon: String, title: String, callback: (evt: MouseEvent) -> Void): Element;
 
     /**
      * Adds a status bar item to the bottom of the app.
      * Not available on mobile.
      */
-    function addStatusBarItem(): HtmlElement;
+    function addStatusBarItem(): Element;
 
     /**
      * Register a command globally.

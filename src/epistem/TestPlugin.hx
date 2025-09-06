@@ -2,10 +2,11 @@ package epistem;
 
 import obsidian.Files.TAbstractFile;
 import obsidian.*;
-import js.html.HtmlElement;
+import js.html.Element;
 import js.html.MouseEvent;
 import js.lib.Promise;
 import js.lib.Object;
+using StringTools;
 
 typedef Settings = {
     var mySetting: String;
@@ -13,7 +14,7 @@ typedef Settings = {
 
 @:expose("default")
 class TestPlugin extends Plugin {
-    var statusBarElement: Null<HtmlElement>;
+    var statusBarElement: Null<Element>;
     var ribbonClickCount: Int;
     public var settings: Settings;
 
@@ -30,6 +31,7 @@ class TestPlugin extends Plugin {
         registerMarkdownCodeBlockProcessor("csv", processCSVBlock);
         setUpStatusBar();
         addCommand({id: "simple-command", name: "Simple Command", callback: simpleCommand});
+        addCommand({id: "simple-command2", name: "Simple Two", callback: simpleCommand2});
         addCommand({id: "simple-edit-command", name: "Simple Edit Command", editorCallback: simpleEditorCommand});
         addSettingTab(new SampleSettingTab(app, this));
         app.vault.on(Modify, handleFileChange);
@@ -59,6 +61,12 @@ class TestPlugin extends Plugin {
         new SampleModal(this.app).open();
     }
 
+    function simpleCommand2() {
+        for (iconName in Obsidian.getIconIds()) {
+            trace("Available icon: " + iconName);
+        }
+    }
+
     function simpleEditorCommand(editor: Editor, view: MarkdownView) {
         final files = app.vault.getAllLoadedFiles();
         var cursor = editor.getCursor();
@@ -80,7 +88,7 @@ class TestPlugin extends Plugin {
         new Notice("Haxe Hello World!", 3000);
     }
 
-    function processCSVBlock(source: String, el: HtmlElement, ctx: MarkdownPostProcessorContext): Promise<Void> {
+    function processCSVBlock(source: String, el: Element, ctx: MarkdownPostProcessorContext): Promise<Void> {
         final rows = source.split("\n").filter((row) -> row.length > 0);
         final doc = el.ownerDocument;
         final table = doc.createTableElement(); el.appendChild(table);
@@ -91,7 +99,20 @@ class TestPlugin extends Plugin {
 
             for (col in cols) {
                 final colEl = doc.createTableCellElement(); rowEl.appendChild(colEl);
-                colEl.innerText = col;
+                col = col.ltrim();
+
+                if (col.indexOf("!") == 0) {
+                    final iconId = col.substr(1);
+                    final icon = Obsidian.getIcon(iconId);
+                    if (icon != null) {
+                        colEl.appendChild(icon);
+                        Obsidian.setTooltip(colEl, "Icon: " + iconId);
+                    } else {
+                        colEl.innerText = "Icon not found: " + iconId;
+                    }
+                } else {
+                    colEl.innerText = col;
+                }   
 
                 colEl.addEventListener("click", (e) -> {
                     e.srcElement.style.backgroundColor = "#ffff00";

@@ -1,15 +1,15 @@
 package obsidian;
 
-import js.html.HtmlElement;
+import js.html.Element;
 
 @:jsRequire("obsidian", "Modal")
 extern abstract class Modal {
     final app: App;
     final scope: Scope;
-    final containerEl: HtmlElement;
-    final modalEl: HtmlElement;
-    final titleEl: HtmlElement;
-    final contentEl: HtmlElement;
+    final containerEl: Element;
+    final modalEl: Element;
+    final titleEl: Element;
+    final contentEl: Element;
     var shouldRestoreSelection: Bool;
 
     function new(app: App);

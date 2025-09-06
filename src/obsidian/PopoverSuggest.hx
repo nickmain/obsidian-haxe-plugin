@@ -1,6 +1,6 @@
 package obsidian;
 
-import js.html.HtmlElement;
+import js.html.Element;
 import js.html.MouseEvent;
 import js.html.KeyboardEvent;
 import haxe.extern.EitherType;
@@ -14,6 +14,6 @@ extern abstract class PopoverSuggest<T> {
 
     function open(): Void;
     function close(): Void;
-    abstract function renderSuggestion(value: T, el: HtmlElement): Void;
+    abstract function renderSuggestion(value: T, el: Element): Void;
     abstract function selectSuggestion(value: T, evt: EitherType<MouseEvent, KeyboardEvent>): Void;
 }

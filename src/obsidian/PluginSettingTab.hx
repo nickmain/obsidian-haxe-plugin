@@ -1,11 +1,11 @@
 package obsidian;
 
-import js.html.HtmlElement;
+import js.html.Element;
 
 @:jsRequire("obsidian", "SettingTab")
 extern abstract class SettingTab {
     final app: App;
-    final containerEl: HtmlElement;
+    final containerEl: Element;
     abstract function display(): Void;
     function hide(): Any;
 }

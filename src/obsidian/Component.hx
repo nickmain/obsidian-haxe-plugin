@@ -5,7 +5,7 @@ import obsidian.Events.AddEventListenerOptions;
 import js.html.Event;
 import js.html.Window;
 import js.html.Document;
-import js.html.HtmlElement;
+import js.html.Element;
 import haxe.extern.EitherType;
 
 extern class Component {
@@ -55,7 +55,7 @@ extern class Component {
      */
     @:overload(function(el: Window, type: String, callback: (ev: Event) -> Void, ?options: EitherType<Bool, AddEventListenerOptions>): Void {})
     @:overload(function(el: Document, type: String, callback: (ev: Event) -> Void, ?options: EitherType<Bool, AddEventListenerOptions>): Void {})
-    function registerDomEvent(el: HtmlElement, type: String, callback: (ev: Event) -> Void, ?options: EitherType<Bool, AddEventListenerOptions>): Void;
+    function registerDomEvent(el: Element, type: String, callback: (ev: Event) -> Void, ?options: EitherType<Bool, AddEventListenerOptions>): Void;
 
     /**
      * Registers an interval (from setInterval) to be cancelled when unloading

@@ -1,6 +1,6 @@
 package obsidian;
 
-import js.html.HtmlElement;
+import js.html.Element;
 import js.lib.Promise;
 import haxe.extern.EitherType;
 
@@ -39,7 +39,7 @@ extern abstract class View extends Component {
     var navigation: Bool;
 
     final leaf: WorkspaceLeaf;
-    final containerEl: HtmlElement;
+    final containerEl: Element;
 
     function new(leaf: WorkspaceLeaf);
 

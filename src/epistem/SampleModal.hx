@@ -1,5 +1,6 @@
 package epistem;
 
+import obsidian.Obsidian;
 import obsidian.Modal;
 import obsidian.App;
 
@@ -10,7 +11,7 @@ class SampleModal extends Modal {
 
     public function onOpen(): Void {
         titleEl.innerText = "Sample Modal";
-        contentEl.innerText = "This is a sample modal dialog.";
+        contentEl.innerHTML = 'This is a sample modal dialog.<br>Version: ${Obsidian.apiVersion}';
     }
 
     public function onClose(): Void {

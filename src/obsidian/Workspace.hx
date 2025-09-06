@@ -1,7 +1,7 @@
 package obsidian;
 
 import haxe.extern.EitherType;
-import js.html.HtmlElement;
+import js.html.Element;
 import js.html.Window;
 import js.html.DragEvent;
 import js.html.ClipboardEvent;
@@ -62,7 +62,7 @@ extern class Workspace extends Events {
      */
     final activeLeaf: Null<WorkspaceLeaf>;
 
-    final containerEl: HtmlElement;
+    final containerEl: Element;
     final layoutReady: Bool;
     function requestSaveLayout(): Void;
 

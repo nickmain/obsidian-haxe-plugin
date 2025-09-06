@@ -1,6 +1,6 @@
 package obsidian;
 
-import js.html.HtmlElement;
+import js.html.Element;
 
 interface MarkdownPostProcessorContext {
 
@@ -22,5 +22,5 @@ interface MarkdownPostProcessorContext {
      * This function may also return null in many circumstances;
      * if you use it, you must be prepared to deal with nulls.
      */
-    public function getSectionInfo(el: HtmlElement): Null<MarkdownSectionInformation>;
+    public function getSectionInfo(el: Element): Null<MarkdownSectionInformation>;
 }
