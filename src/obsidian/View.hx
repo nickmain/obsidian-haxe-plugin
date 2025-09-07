@@ -1,5 +1,6 @@
 package obsidian;
 
+import js.html.MouseEvent;
 import js.html.Element;
 import js.lib.Promise;
 import haxe.extern.EitherType;
@@ -24,7 +25,18 @@ typedef ViewStateResult = {
     history: Bool
 }
 
-@:require("obsidian", "View")
+@:jsRequire("obsidian", "ItemView")
+extern abstract class ItemView extends View {
+
+    final contentEl: Element;
+
+    function new(leaf: WorkspaceLeaf);
+
+    function addAction(icon: String, title: String, callback: (evt: MouseEvent) -> Void): Element;
+}
+
+
+@:jsRequire("obsidian", "View")
 extern abstract class View extends Component {
     final app: App;
     var icon: String;

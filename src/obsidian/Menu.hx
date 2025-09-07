@@ -38,7 +38,7 @@ typedef MenuPositionDef = {
 
 extern class MenuSeparator {}
 
-@:require("obsidian", "Menu")
+@:jsRequire("obsidian", "Menu")
 extern class Menu extends Component {
     function new();
     function setNoIcon(): Menu;

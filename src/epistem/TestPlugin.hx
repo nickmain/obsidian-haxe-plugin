@@ -31,11 +31,12 @@ class TestPlugin extends Plugin {
         registerMarkdownCodeBlockProcessor("csv", processCSVBlock);
         setUpStatusBar();
         addCommand({id: "simple-command", name: "Simple Command", callback: simpleCommand});
-        addCommand({id: "simple-command2", name: "Simple Two", callback: simpleCommand2});
+        addCommand({id: "open-view-command", name: "Open Sample View", callback: openViewCommand});
         addCommand({id: "simple-edit-command", name: "Simple Edit Command", editorCallback: simpleEditorCommand});
         addSettingTab(new SampleSettingTab(app, this));
         app.vault.on(Modify, handleFileChange);
-
+        registerView(SampleView.VIEW_TYPE, (leaf) -> new SampleView(leaf));
+        
         return loadSettings();
     }
 
@@ -61,12 +62,17 @@ class TestPlugin extends Plugin {
         new SampleModal(this.app).open();
     }
 
-    function simpleCommand2() {
-        for (iconName in Obsidian.getIconIds()) {
-            trace("Available icon: " + iconName);
+    function openViewCommand() {
+        final leaves = app.workspace.getLeavesOfType(SampleView.VIEW_TYPE);
+        if (leaves.length > 0) {
+            app.workspace.revealLeaf(leaves[0]);
+        } else {
+            final leaf = app.workspace.getRightLeaf(false);
+            leaf.setViewState({ type: SampleView.VIEW_TYPE, active: true })
+                .then((_) -> app.workspace.revealLeaf(leaf));
         }
     }
-
+    
     function simpleEditorCommand(editor: Editor, view: MarkdownView) {
         final files = app.vault.getAllLoadedFiles();
         var cursor = editor.getCursor();

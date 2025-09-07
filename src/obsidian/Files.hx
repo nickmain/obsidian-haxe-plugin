@@ -21,7 +21,7 @@ interface FileStats {
     final size: Int;
 }
 
-@:require("obsidian", "TFolder")
+@:jsRequire("obsidian", "TFolder")
 extern class TFolder extends TAbstractFile {
     final children: Array<TAbstractFile>;
     function isRoot(): Bool;
@@ -34,7 +34,7 @@ extern abstract class TAbstractFile {
     final parent: Null<TFolder>;
 }
 
-@:require("obsidian", "TFile")
+@:jsRequire("obsidian", "TFile")
 extern class TFile extends TAbstractFile {
     final stat: FileStats;
     final basename: String;
