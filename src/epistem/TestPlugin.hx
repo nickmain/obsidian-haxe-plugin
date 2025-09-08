@@ -1,5 +1,7 @@
 package epistem;
 
+import haxe.extern.EitherType;
+import obsidian.Workspace.EventName_EditorMenu;
 import obsidian.Files.TAbstractFile;
 import obsidian.*;
 import js.html.Element;
@@ -34,14 +36,25 @@ class TestPlugin extends Plugin {
         addCommand({id: "open-view-command", name: "Open Sample View", callback: openViewCommand});
         addCommand({id: "simple-edit-command", name: "Simple Edit Command", editorCallback: simpleEditorCommand});
         addSettingTab(new SampleSettingTab(app, this));
-        app.vault.on(Modify, handleFileChange);
+        registerEvent(app.vault.on(Modify, handleFileChange));
         registerView(SampleView.VIEW_TYPE, (leaf) -> new SampleView(leaf));
+        registerEvent(app.workspace.on(EditorMenu, editMenuOpen));
         
         return loadSettings();
     }
 
     public function onunload(): Void {
         trace("Plugin unloaded");
+    }
+
+    function editMenuOpen(menu: Menu, editor: Editor, info: EitherType<MarkdownView, MarkdownFileInfo>) {
+        menu.addItem(item -> {
+            item.setTitle("Test Item")
+                .setIcon("pentagon")
+                .onClick(evt -> {
+                    new Notice("Test Item clicked");
+                });
+        });
     }
 
     function loadSettings(): Promise<Void> {

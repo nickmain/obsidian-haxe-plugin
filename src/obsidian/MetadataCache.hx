@@ -3,21 +3,58 @@ package obsidian;
 import obsidian.Files.TFile;
 import obsidian.Events.EventRef;
 
-interface CachedMetadata {
-    // links?: LinkCache[];
-    // embeds?: EmbedCache[];
-    // tags?: TagCache[];
-    // headings?: HeadingCache[];
+typedef Loc = { line: Int, col: Int, offset: Int }
+typedef Pos = { start: Loc, end: Loc }
+typedef CacheItem = { position: Pos }
+typedef Reference = { link: String, original: String, ?displayText: String }
+typedef ReferenceCache = Reference & CacheItem & {}
+typedef LinkCache = ReferenceCache & {}
+typedef EmbedCache = ReferenceCache & {}
+typedef TagCache = CacheItem & { tag: String }
+typedef HeadingCache = CacheItem & { heading: String, level: Int }
+typedef SectionCache = CacheItem & { ?id: String, type: String }
 
-    // /** Sections are root level markdown blocks, which can be used to divide the document up. */
-    // sections?: SectionCache[];
-    // listItems?: ListItemCache[];
-    // frontmatter?: FrontMatterCache;
-    // frontmatterPosition?: Pos;
-    // frontmatterLinks?: FrontmatterLinkCache[];
-    // blocks?: Record<String, BlockCache>;
+typedef ListItemCache = CacheItem & {
+    /** The block ID of this list item, if defined. */
+    ?id: String,
+
+    /**
+     * A single character indicating the checked status of a task.
+     * The space character `' '` is interpreted as an incomplete task.
+     * An other character is interpreted as completed task.
+     * `undefined` if this item isn't a task.
+     */
+    ?task: String,
+
+    /**
+     * Line number of the parent list item (position.start.line).
+     * If this item has no parent (e.g. it's a root level list),
+     * then this value is the negative of the line number of the first list item (start of the list).
+     *
+     * Can be used to deduce which list items belongs to the same group (item1.parent === item2.parent).
+     * Can be used to reconstruct hierarchy information (parentItem.position.start.line === childItem.parent).
+     */
+    parent: Int
 }
 
+typedef FrontMatterCache = Map<String, Dynamic>;
+typedef FrontmatterLinkCache = Reference & { key: String }
+typedef BlockCache = CacheItem & { id: String }
+
+typedef CachedMetadata = {
+    final ?links: Array<LinkCache>;
+    final ?embeds: Array<EmbedCache>;
+    final ?tags: Array<TagCache>;
+    final ?headings: Array<HeadingCache>;
+
+    /** Sections are root level markdown blocks, which can be used to divide the document up. */
+    final ?sections: Array<SectionCache>;
+    final ?listItems: Array<ListItemCache>;
+    final ?frontmatter: FrontMatterCache;
+    final ?frontmatterPosition: Pos;
+    final ?frontmatterLinks: Array<FrontmatterLinkCache>;
+    final ?blocks: Map<String, BlockCache>;
+}
 
 /**
  * Linktext is any internal link that is composed of a path and a subpath, such as "My note#Heading"
