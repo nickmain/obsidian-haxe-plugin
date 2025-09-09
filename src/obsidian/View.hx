@@ -1,5 +1,6 @@
 package obsidian;
 
+import obsidian.Files.TFile;
 import js.html.MouseEvent;
 import js.html.Element;
 import js.lib.Promise;
@@ -35,6 +36,20 @@ extern abstract class ItemView extends View {
     function addAction(icon: String, title: String, callback: (evt: MouseEvent) -> Void): Element;
 }
 
+@:jsRequire("obsidian", "FileView")
+extern abstract class FileView extends ItemView {
+    final allowNoFile: Bool;
+    final file: Null<TFile>;
+    function new(leaf: WorkspaceLeaf);
+    function getDisplayText(): String;
+    function onload(): Void;
+    function getState(): Any;
+    function setState(state: Any, result: ViewStateResult): Promise<Void>;
+    function onLoadFile(file: TFile): Promise<Void>;
+    function onUnloadFile(file: TFile): Promise<Void>;
+    function onRename(file: TFile): Promise<Void>;
+    function canAcceptExtension(extension: String): Bool;
+}
 
 @:jsRequire("obsidian", "View")
 extern abstract class View extends Component {

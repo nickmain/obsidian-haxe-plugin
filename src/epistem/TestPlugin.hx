@@ -39,7 +39,7 @@ class TestPlugin extends Plugin {
         registerEvent(app.vault.on(Modify, handleFileChange));
         registerView(SampleView.VIEW_TYPE, (leaf) -> new SampleView(leaf));
         registerEvent(app.workspace.on(EditorMenu, editMenuOpen));
-        
+
         return loadSettings();
     }
 
@@ -72,6 +72,24 @@ class TestPlugin extends Plugin {
     }
 
     function simpleCommand() {
+        final activeFile = app.workspace.getActiveFile();
+        if (activeFile != null) {
+            final cache = app.metadataCache.getFileCache(activeFile);
+            final blocks = cache?.blocks;
+            if (blocks != null) {
+                for (key=>value in blocks) {
+                    trace('block ${key} => ${value}');
+                }
+            }
+
+            final embeds = cache?.embeds;
+            if (embeds != null) {
+                for(embed in embeds) {
+                    trace('Embed: $embed');
+                }
+            }
+        }
+
         new SampleModal(this.app).open();
     }
 
@@ -85,7 +103,7 @@ class TestPlugin extends Plugin {
                 .then((_) -> app.workspace.revealLeaf(leaf));
         }
     }
-    
+
     function simpleEditorCommand(editor: Editor, view: MarkdownView) {
         final files = app.vault.getAllLoadedFiles();
         var cursor = editor.getCursor();
@@ -131,7 +149,7 @@ class TestPlugin extends Plugin {
                     }
                 } else {
                     colEl.innerText = col;
-                }   
+                }
 
                 colEl.addEventListener("click", (e) -> {
                     e.srcElement.style.backgroundColor = "#ffff00";

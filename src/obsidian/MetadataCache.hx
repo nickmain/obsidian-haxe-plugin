@@ -1,5 +1,6 @@
 package obsidian;
 
+import epistem.js.JSObjectMap;
 import obsidian.Files.TFile;
 import obsidian.Events.EventRef;
 
@@ -37,7 +38,7 @@ typedef ListItemCache = CacheItem & {
     parent: Int
 }
 
-typedef FrontMatterCache = Map<String, Dynamic>;
+typedef FrontMatterCache = JSObjectMap<Dynamic>;
 typedef FrontmatterLinkCache = Reference & { key: String }
 typedef BlockCache = CacheItem & { id: String }
 
@@ -53,7 +54,7 @@ typedef CachedMetadata = {
     final ?frontmatter: FrontMatterCache;
     final ?frontmatterPosition: Pos;
     final ?frontmatterLinks: Array<FrontmatterLinkCache>;
-    final ?blocks: Map<String, BlockCache>;
+    final ?blocks: JSObjectMap<BlockCache>;
 }
 
 /**
@@ -83,13 +84,13 @@ extern class MetadataCache extends Events {
      * Contains all resolved links. This object maps each source file's path to an object of destination file paths with the link count.
      * Source and destination paths are all vault absolute paths that comes from `TFile.path` and can be used with `Vault.getAbstractFileByPath(path)`.
      */
-    final resolvedLinks: Map<String, Map<String, Int>>;
+    final resolvedLinks: JSObjectMap<JSObjectMap<Int>>;
 
     /**
      * Contains all unresolved links. This object maps each source file to an object of unknown destinations with count.
      * Source paths are all vault absolute paths, similar to `resolvedLinks`.
      */
-    final unresolvedLinks: Map<String, Map<String, Int>>;
+    final unresolvedLinks: JSObjectMap<JSObjectMap<Int>>;
 
     /**
      * Called when a file has been indexed, and its (updated) cache is now available.

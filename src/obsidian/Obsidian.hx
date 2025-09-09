@@ -1,5 +1,6 @@
 package obsidian;
 
+import epistem.js.JSObjectMap;
 import obsidian.Setting.TooltipOptions;
 import js.html.Element;
 import js.html.DocumentFragment;
@@ -20,15 +21,15 @@ typedef RequestUrlParam = {
     var ?method: String;
     var ?contentType: String;
     var ?body: EitherType<String, ArrayBuffer>;
-    var ?headers: Map<String, String>;
+    var ?headers: JSObjectMap<String>;
     /** Whether to throw an error when the status code is 400+. Defaults to true */
     // var ?throw: Bool;
 }
 
-typedef RequestUrlResponse = { status: Int, headers: Map<String, String>, arrayBuffer: ArrayBuffer, json: Dynamic, text: String }
+typedef RequestUrlResponse = { status: Int, headers: JSObjectMap<String>, arrayBuffer: ArrayBuffer, json: Dynamic, text: String }
 extern class RequestUrlResponsePromise extends Promise<RequestUrlResponse> {
-    final arrayBuffer: Promise<ArrayBuffer>; 
-    final json: Promise<Dynamic>; 
+    final arrayBuffer: Promise<ArrayBuffer>;
+    final json: Promise<Dynamic>;
     final text: Promise<String>;
 }
 
@@ -43,7 +44,7 @@ extern class Obsidian {
 
     /** Insert an SVG into the element from an iconId. Does nothing if no icon associated with the iconId. */
     static function setIcon(parent: Element, iconId: String): Void;
-    
+
     /** Create an SVG from an iconId. Returns null if no icon associated with the iconId. */
     static function getIcon(iconId: String): Null<SVGElement>;
 
