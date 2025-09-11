@@ -1,5 +1,6 @@
 package epistem;
 
+import js.lib.WebAssembly;
 import haxe.extern.EitherType;
 import obsidian.Workspace.EventName_EditorMenu;
 import obsidian.Files.TAbstractFile;
@@ -33,12 +34,18 @@ class TestPlugin extends Plugin {
         registerMarkdownCodeBlockProcessor("csv", processCSVBlock);
         setUpStatusBar();
         addCommand({id: "simple-command", name: "Simple Command", callback: simpleCommand});
+        addCommand({id: "wasm-command", name: "Test WASM", callback: testWasm});
         addCommand({id: "open-view-command", name: "Open Sample View", callback: openViewCommand});
         addCommand({id: "simple-edit-command", name: "Simple Edit Command", editorCallback: simpleEditorCommand});
         addSettingTab(new SampleSettingTab(app, this));
         registerEvent(app.vault.on(Modify, handleFileChange));
         registerView(SampleView.VIEW_TYPE, (leaf) -> new SampleView(leaf));
         registerEvent(app.workspace.on(EditorMenu, editMenuOpen));
+
+        final testTxtPath = Obsidian.normalizePath('${app.vault.configDir}/plugins/haxe-test-plugin/test.txt');
+        app.vault.adapter.read(testTxtPath).then((content) -> {
+            trace('CONTENT:\n${content}');
+        });
 
         return loadSettings();
     }
@@ -91,6 +98,19 @@ class TestPlugin extends Plugin {
         }
 
         new SampleModal(this.app).open();
+    }
+
+    function testWasm() {
+        final wasmPath = Obsidian.normalizePath('${app.vault.configDir}/plugins/haxe-test-plugin/hello_world.wasm');
+        app.vault.adapter.readBinary(wasmPath).then(buffer -> {
+            final imports = {
+                env: { abort: () -> trace("Abort!") }
+            };
+            WebAssembly.instantiate(buffer, imports).then(wasmModule -> {
+                final addResult = wasmModule.instance.exports.add(24, 5);
+                trace('WASM result = ${addResult}');
+            });
+        });
     }
 
     function openViewCommand() {
