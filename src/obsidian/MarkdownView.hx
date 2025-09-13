@@ -1,50 +1,36 @@
 package obsidian;
 
-extern class MarkdownView {
+import obsidian.HoverParent.HoverPopover;
 
-    // /** @public */
-    // editor: Editor;
+enum abstract MarkdownViewModeType(String) {
+    var Source = "source";
+    var Preview = "preview";
+}
 
-    // /** @public */
-    // previewMode: MarkdownPreviewView;
+interface MarkdownSubView {
+    function getScroll(): Float;
+    function applyScroll(scroll: Float): Void;
+    function get(): String;
+    function set(data: String, clear: Bool): Void;
+}
 
-    // /** @public */
-    // currentMode: MarkdownSubView;
+// Stub
+extern class MarkdownPreviewView {}
 
-    // /** @public */
-    // hoverPopover: HoverPopover | null;
-    // /**
-    //  * @public
-    //  */
-    // constructor(leaf: WorkspaceLeaf);
+@:jsRequire("obsidian", "MarkdownView")
+extern class MarkdownView extends TextFileView implements MarkdownFileInfo {
 
-    // /**
-    //  * @public
-    //  */
-    // getViewType(): string;
+    final editor: Editor;
+    final previewMode: MarkdownPreviewView;
+    final currentMode: MarkdownSubView;
+    final hoverPopover: Null<HoverPopover>;
 
-    // /**
-    //  * @public
-    //  */
-    // getMode(): MarkdownViewModeType;
+    function new(leaf: WorkspaceLeaf);
 
-    // /**
-    //  * @public
-    //  */
-    // getViewData(): string;
-    // /**
-    //  * @public
-    //  */
-    // clear(): void;
-
-    // /**
-    //  * @public
-    //  */
-    // setViewData(data: string, clear: boolean): void;
-
-    // /**
-    //  * @public
-    //  */
-    // showSearch(replace?: boolean): void;
-
+    function getViewType(): String;
+    function getMode(): MarkdownViewModeType;
+    function getViewData(): String;
+    function clear(): Void;
+    function setViewData(data: String, clear: Bool): Void;
+    function showSearch(?replace: Bool): Void;
 }

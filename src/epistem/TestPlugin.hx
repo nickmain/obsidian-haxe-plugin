@@ -191,3 +191,4 @@ class TestPlugin extends Plugin {
 // TODO: Canvas plugin example
 // TODO: Protocol handler example
 // TODO: CodeMirror editor extension example
+// TODO: MarkdownView

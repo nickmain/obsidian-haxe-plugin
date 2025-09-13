@@ -1,10 +1,12 @@
 package obsidian;
 
+import obsidian.Files.TFile;
+
 interface MarkdownFileInfo extends HoverParent {
 
     final app: App;
 
-    // get file(): TFile | null;
+    var file (default, null): Null<TFile>;
 
     final editor: Null<Editor>;
 }
