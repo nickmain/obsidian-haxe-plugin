@@ -26,7 +26,13 @@ extern abstract class Plugin extends Component {
     function registerMarkdownCodeBlockProcessor(
         language: String,
         handler: (source: String, el: Element, ctx: MarkdownPostProcessorContext) -> Promise<Void>,
-        ?sortOrder: Float): MarkdownPostProcessor;
+        ?sortOrder: Int): MarkdownPostProcessor;
+
+    /**
+     * Registers a post processor, to change how the document looks in reading mode.
+     * @see {@link https://docs.obsidian.md/Plugins/Editor/Markdown+post+processing}
+     */
+    function registerMarkdownPostProcessor(postProcessor: MarkdownPostProcessor, ?sortOrder: Int): MarkdownPostProcessor;
 
     function addRibbonIcon(icon: String, title: String, callback: (evt: MouseEvent) -> Void): Element;
 

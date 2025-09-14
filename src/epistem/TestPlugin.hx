@@ -32,6 +32,7 @@ class TestPlugin extends Plugin {
         registerEditorSuggest(new SampleSuggester(this));
         addRibbonIcon("hand-metal", manifest.name, handleRibbonClick);
         registerMarkdownCodeBlockProcessor("csv", processCSVBlock);
+        registerMarkdownPostProcessor(postProcessMarkdown);
         setUpStatusBar();
         addCommand({id: "simple-command", name: "Simple Command", callback: simpleCommand});
         addCommand({id: "wasm-command", name: "Test WASM", callback: testWasm});
@@ -75,7 +76,7 @@ class TestPlugin extends Plugin {
     }
 
     function handleFileChange(file: TAbstractFile): Void {
-        trace('File changed: ${file.path}');
+        // trace('File changed: ${file.path}');
     }
 
     function simpleCommand() {
@@ -143,6 +144,11 @@ class TestPlugin extends Plugin {
         ribbonClickCount++;
         statusBarElement?.innerText = '💚 Clicked ${ribbonClickCount}';
         new Notice("Haxe Hello World!", 3000);
+    }
+
+    function postProcessMarkdown(el: Element, ctx: MarkdownPostProcessorContext): Promise<Void> {
+        trace('postProcessMarkdown ${ctx.sourcePath}');
+        return Promise.resolve();
     }
 
     function processCSVBlock(source: String, el: Element, ctx: MarkdownPostProcessorContext): Promise<Void> {

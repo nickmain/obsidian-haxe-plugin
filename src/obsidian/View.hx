@@ -74,9 +74,13 @@ extern abstract class View extends Component {
     function onClose(): Promise<Void>; // can be overridden
     abstract function getViewType(): String;
 
+    /** Called by the workspace to fetch the view's state */
     function getState(): Any;
+
+    /** Called by the workspace to set the view's state */
     function setState(state: Any, result: ViewStateResult): Promise<Void>;
-    function getEphemeralState(): Any;
+
+    function getEphemeralState(): Null<Any>;
     function setEphemeralState(state: Any): Void;
     function getIcon(): String;
     function onResize(): Void;
@@ -93,4 +97,5 @@ extern abstract class View extends Component {
 enum abstract PaneMenuSource(String) {
     var MoreOptions = 'more-options';
     var TabHeader = 'tab-header';
+    var SidebarContext = 'sidebar-context-menu';
 }
