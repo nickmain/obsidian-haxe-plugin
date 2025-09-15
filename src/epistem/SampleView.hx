@@ -80,20 +80,20 @@ class SampleView extends ItemView {
         return super.onClose();
     }
 
-    override function getState(): Any {      
-        trace('getState --> ${state}');  
+    override function getState(): Any {
+        // trace('getState --> ${state}');
         return state;
     }
 
     override function setState(state: Any, result: ViewStateResult): Promise<Void> {
         final incomingState: SampleViewState = cast(state);
         this.state.count = incomingState.count ?? 0;
-        trace('setState --> ${state}');
+        // trace('setState --> ${state}');
         buildUI();
         return super.setState(state, result);
     }
 
-    function buildUI() {        
+    function buildUI() {
         contentEl.innerHTML = "";
         contentEl.innerHTML = '<p>Hello from SampleView!</p><p>State: ${state.count}</p>';
     }

@@ -33,6 +33,7 @@ class TestPlugin extends Plugin {
         addRibbonIcon("hand-metal", manifest.name, handleRibbonClick);
         registerMarkdownCodeBlockProcessor("csv", processCSVBlock);
         registerMarkdownPostProcessor(postProcessMarkdown);
+        registerObsidianProtocolHandler("sample", urlHandler);
         setUpStatusBar();
         addCommand({id: "simple-command", name: "Simple Command", callback: simpleCommand});
         addCommand({id: "wasm-command", name: "Test WASM", callback: testWasm});
@@ -112,6 +113,10 @@ class TestPlugin extends Plugin {
                 trace('WASM result = ${addResult}');
             });
         });
+    }
+
+    function urlHandler(params: Dynamic<String>) {
+        trace('Link: $params');
     }
 
     function openViewCommand() {
