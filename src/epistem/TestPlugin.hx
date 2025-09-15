@@ -198,3 +198,4 @@ class TestPlugin extends Plugin {
 // TODO: Protocol handler example
 // TODO: CodeMirror editor extension example
 // TODO: MarkdownView
+// TODO: add custom actions to markdown views.
