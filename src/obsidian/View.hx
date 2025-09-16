@@ -38,8 +38,8 @@ extern abstract class ItemView extends View {
 
 @:jsRequire("obsidian", "FileView")
 extern abstract class FileView extends ItemView {
-    final allowNoFile: Bool;
-    final file: Null<TFile>;
+    var allowNoFile: Bool;
+    var file: Null<TFile>;
     function new(leaf: WorkspaceLeaf);
     function getDisplayText(): String;
     function onload(): Void;

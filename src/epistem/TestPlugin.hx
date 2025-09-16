@@ -38,10 +38,12 @@ class TestPlugin extends Plugin {
         addCommand({id: "simple-command", name: "Simple Command", callback: simpleCommand});
         addCommand({id: "wasm-command", name: "Test WASM", callback: testWasm});
         addCommand({id: "open-view-command", name: "Open Sample View", callback: openViewCommand});
+        addCommand({id: "open-edit-view-command", name: "Open Sample Edit View", callback: openEditViewCommand});
         addCommand({id: "simple-edit-command", name: "Simple Edit Command", editorCallback: simpleEditorCommand});
         addSettingTab(new SampleSettingTab(app, this));
         registerEvent(app.vault.on(Modify, handleFileChange));
         registerView(SampleView.VIEW_TYPE, (leaf) -> new SampleView(leaf));
+        registerView(SampleEditView.VIEW_TYPE, (leaf) -> new SampleEditView(leaf));
         registerEvent(app.workspace.on(EditorMenu, editMenuOpen));
 
         final testTxtPath = Obsidian.normalizePath('${app.vault.configDir}/plugins/haxe-test-plugin/test.txt');
@@ -120,14 +122,24 @@ class TestPlugin extends Plugin {
     }
 
     function openViewCommand() {
-        final leaves = app.workspace.getLeavesOfType(SampleView.VIEW_TYPE);
-        if (leaves.length > 0) {
-            app.workspace.revealLeaf(leaves[0]);
-        } else {
-            final leaf = app.workspace.getRightLeaf(false);
-            leaf.setViewState({ type: SampleView.VIEW_TYPE, active: true })
+        // final leaves = app.workspace.getLeavesOfType(SampleView.VIEW_TYPE);
+        // if (leaves.length > 0) {
+        //     app.workspace.revealLeaf(leaves[0]);
+        // } else {
+        //     final leaf = app.workspace.getRightLeaf(false);
+        //     leaf.setViewState({ type: SampleView.VIEW_TYPE, active: true })
+        //         .then((_) -> app.workspace.revealLeaf(leaf));
+        // }
+
+        final leaf = app.workspace.getLeaf(false);
+        leaf.setViewState({ type: SampleView.VIEW_TYPE, active: true })
+            .then((_) -> app.workspace.revealLeaf(leaf));
+    }
+
+    function openEditViewCommand() {
+        final leaf = app.workspace.getLeaf(false);
+        leaf.setViewState({ type: SampleEditView.VIEW_TYPE, active: true })
                 .then((_) -> app.workspace.revealLeaf(leaf));
-        }
     }
 
     function simpleEditorCommand(editor: Editor, view: MarkdownView) {

@@ -19,7 +19,7 @@ enum abstract RenameEventName(String) {
     var Rename = "rename";
 }
 
-extern class Vault {
+extern class Vault extends Events {
     final adapter: DataAdapter;
 
     /**
