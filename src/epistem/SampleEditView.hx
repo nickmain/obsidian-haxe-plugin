@@ -1,5 +1,6 @@
 package epistem;
 
+import obsidian.Files.TFile;
 import js.html.MouseEvent;
 import js.html.Element;
 import obsidian.Notice;
@@ -30,11 +31,16 @@ class SampleEditView extends MarkdownView {
         super.addAction("sunset", "Holler", (_) -> {
             final notice = new Notice("Holler !!");
             notice.noticeEl.style.backgroundColor = "yellow";
-        });
+        }).style.backgroundColor = "yellow";
 
         return super.onOpen().then((_) -> {
             setViewData("This is a virtual note", false);
         });
+    }
+
+    override function onLoadFile(file:TFile): Promise<Void> {
+        trace('onLoadFile ${file.name}');
+        return super.onLoadFile(file);
     }
 
     override function onClose(): Promise<Void> {

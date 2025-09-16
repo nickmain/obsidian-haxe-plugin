@@ -43,7 +43,7 @@ class TestPlugin extends Plugin {
         addSettingTab(new SampleSettingTab(app, this));
         registerEvent(app.vault.on(Modify, handleFileChange));
         registerView(SampleView.VIEW_TYPE, (leaf) -> new SampleView(leaf));
-        registerView(SampleEditView.VIEW_TYPE, (leaf) -> new SampleEditView(leaf));
+        registerView(SampleEditView.VIEW_TYPE, openEditView);
         registerEvent(app.workspace.on(EditorMenu, editMenuOpen));
 
         final testTxtPath = Obsidian.normalizePath('${app.vault.configDir}/plugins/haxe-test-plugin/test.txt');
@@ -56,6 +56,10 @@ class TestPlugin extends Plugin {
 
     public function onunload(): Void {
         trace("Plugin unloaded");
+    }
+
+    function openEditView(leaf: WorkspaceLeaf): View {
+        return new SampleEditView(leaf);
     }
 
     function editMenuOpen(menu: Menu, editor: Editor, info: EitherType<MarkdownView, MarkdownFileInfo>) {
