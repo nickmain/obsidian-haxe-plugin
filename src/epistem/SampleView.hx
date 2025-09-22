@@ -1,5 +1,8 @@
 package epistem;
 
+import codemirror.EditorView;
+import codemirror.EditorState;
+import codemirror.CodeMirrorView;
 import obsidian.Notice;
 import obsidian.Menu;
 import haxe.extern.EitherType;
@@ -14,6 +17,7 @@ class SampleView extends ItemView {
     public static final VIEW_TYPE: String = "sample-view";
 
     var state: SampleViewState;
+    var cmEditor: Null<EditorView>;
 
     public function new(leaf: WorkspaceLeaf) {
         super(leaf);
@@ -94,7 +98,16 @@ class SampleView extends ItemView {
     }
 
     function buildUI() {
-        contentEl.innerHTML = "";
-        contentEl.innerHTML = '<p>Hello from SampleView!</p><p>State: ${state.count}</p>';
+        // contentEl.innerHTML = "";
+        // contentEl.innerHTML = '<p>Hello from SampleView!</p><p>State: ${state.count}</p>';
+
+        if (contentEl.hasChildNodes()) { return; }
+
+        cmEditor = new EditorView({
+            state: EditorState.create({
+                extensions: [ CodeMirrorView.lineNumbers() ]
+            }),
+            parent: contentEl
+        });
     }
 }
