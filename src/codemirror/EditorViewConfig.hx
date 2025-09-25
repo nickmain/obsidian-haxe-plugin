@@ -3,6 +3,8 @@ package codemirror;
 import haxe.extern.EitherType;
 import js.html.DocumentFragment;
 import js.html.DOMElement;
+import js.html.Document;
+import js.html.ShadowRoot;
 
 /**
 The type of object given to the [`EditorView`](https://codemirror.net/6/docs/ref/#view.EditorView)
@@ -24,21 +26,23 @@ typedef EditorViewConfig = EditorStateConfig & {
     */
     var ?parent: EitherType<DOMElement, DocumentFragment>;
 
-    // /**
-    // If the view is going to be mounted in a shadow root or document
-    // other than the one held by the global variable `document` (the
-    // default), you should pass it here. If you provide `parent`, but
-    // not this option, the editor will automatically look up a root
-    // from the parent.
-    // */
-    // root?: Document | ShadowRoot;
-    // /**
-    // Override the way transactions are
-    // [dispatched](https://codemirror.net/6/docs/ref/#view.EditorView.dispatch) for this editor view.
-    // Your implementation, if provided, should probably call the
-    // view's [`update` method](https://codemirror.net/6/docs/ref/#view.EditorView.update).
-    // */
-    // dispatchTransactions?: (trs: readonly Transaction[], view: EditorView) => void;
+    /**
+    If the view is going to be mounted in a shadow root or document
+    other than the one held by the global variable `document` (the
+    default), you should pass it here. If you provide `parent`, but
+    not this option, the editor will automatically look up a root
+    from the parent.
+    */
+    var ?root: EitherType<Document, ShadowRoot>;
+
+    /**
+    Override the way transactions are
+    [dispatched](https://codemirror.net/6/docs/ref/#view.EditorView.dispatch) for this editor view.
+    Your implementation, if provided, should probably call the
+    view's [`update` method](https://codemirror.net/6/docs/ref/#view.EditorView.update).
+    */
+    var ?dispatchTransactions: (trs: Array<Transaction>, view: EditorView) -> Void;
+
     // /**
     // **Deprecated** single-transaction version of
     // `dispatchTransactions`. Will force transactions to be dispatched

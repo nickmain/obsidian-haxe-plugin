@@ -1,5 +1,7 @@
 package epistem;
 
+import js.html.Event;
+import codemirror.BlockInfo;
 import codemirror.EditorView;
 import codemirror.EditorState;
 import codemirror.CodeMirrorView;
@@ -103,11 +105,40 @@ class SampleView extends ItemView {
 
         if (contentEl.hasChildNodes()) { return; }
 
+        final fontTheme = EditorView.theme({
+            // Apply specifically to the content
+            ".cm-content": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "font-size": "18pt",
+                "background-color": "Ivory"
+            },
+            // You can also target other elements like gutters if needed
+            ".cm-gutters": {
+                "fontFamily": "'Source Code Pro', monospace",
+                "font-size": "15pt"
+            }
+        });
+
         cmEditor = new EditorView({
             state: EditorState.create({
-                extensions: [ CodeMirrorView.lineNumbers() ]
+                extensions: [
+                    CodeMirrorView.lineNumbers({
+                        // formatNumber: (lineNo, state) -> { '$lineNo->'; },
+                        domEventHandlers: {
+                            "click": lineNumberClick
+                        }
+                    }),
+                    fontTheme
+                ]
             }),
             parent: contentEl
         });
+    }
+
+    function lineNumberClick(view: EditorView, line: BlockInfo, event: Event): Bool {
+        final lineInfo = view.state.doc.lineAt(line.from);
+        new Notice('Clicked line ${lineInfo.number}');
+        trace(lineInfo);
+        return true;
     }
 }

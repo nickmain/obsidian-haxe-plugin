@@ -26,6 +26,15 @@ private class JSObjectEntryKVInterator<V> {
  */
 abstract JSObjectMap<V>(Object) {
 
+    inline public function new(obj: Dynamic<V>) {
+        this = cast(obj);
+    }
+
+    @:from
+    static public function fromObject<V>(obj: Dynamic<V>) {
+        return new JSObjectMap<V>(obj);
+    }
+
     public function keyValueIterator(): KeyValueIterator<String, V> {
         final entryIterator = new ArrayIterator(Object.entries(this));
         return new JSObjectEntryKVInterator<V>(entryIterator);
