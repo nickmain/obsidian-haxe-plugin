@@ -103,6 +103,11 @@ class SampleView extends ItemView {
     }
 
     private function handleEditorUpdate(update: ViewUpdate) {
+        if (update.selectionSet) {
+            final selection = update.view.state.selection.main;
+            trace('Selection: ${selection.from}-${selection.to}');
+        }
+
         update.changes.iterChanges((fromA, toA, fromB, toB, inserted) -> {
             trace('[$fromA-$toA] [$fromB-$toB] ${inserted.toString()}');
         });

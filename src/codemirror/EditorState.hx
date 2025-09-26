@@ -74,24 +74,23 @@ extern class EditorState {
         effects: Array<StateEffect<Any>>
     };
 
-    // /**
-    // Create a [change set](https://codemirror.net/6/docs/ref/#state.ChangeSet) from the given change
-    // description, taking the state's document length and line
-    // separator into account.
-    // */
-    // changes(spec?: ChangeSpec): ChangeSet;
+    /**
+    Create a [change set](https://codemirror.net/6/docs/ref/#state.ChangeSet) from the given change
+    description, taking the state's document length and line
+    separator into account.
+    */
+    function changes(?spec: ChangeSpec): ChangeSet;
 
-    // /**
-    // Using the state's [line
-    // separator](https://codemirror.net/6/docs/ref/#state.EditorState^lineSeparator), create a
-    // [`Text`](https://codemirror.net/6/docs/ref/#state.Text) instance from the given string.
-    // */
-    // toText(string: string): Text;
+    /**
+    Using the state's [line separator](https://codemirror.net/6/docs/ref/#state.EditorState^lineSeparator), create a
+    [`Text`](https://codemirror.net/6/docs/ref/#state.Text) instance from the given string.
+    */
+    function toText(string: String): Text;
 
-    // /**
-    // Return the given range of the document as a string.
-    // */
-    // sliceDoc(from?: number, to?: number): string;
+    /**
+    Return the given range of the document as a string.
+    */
+    function sliceDoc(?from: Int, ?to: Int): String;
 
     // /**
     // Get the value of a state [facet](https://codemirror.net/6/docs/ref/#state.Facet).
