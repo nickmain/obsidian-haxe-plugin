@@ -487,11 +487,10 @@ extern class EditorView {
     // */
     // static exceptionSink: Facet<(exception: any) => void, readonly ((exception: any) => void)[]>;
 
-    // /**
-    // A facet that can be used to register a function to be called
-    // every time the view updates.
-    // */
-    // static updateListener: Facet<(update: ViewUpdate) => void, readonly ((update: ViewUpdate) => void)[]>;
+    /**
+    A facet that can be used to register a function to be called every time the view updates.
+    */
+    static final updateListener: Facet<(update: ViewUpdate) -> Void, Array<((update: ViewUpdate) -> Void)>>;
 
     // /**
     // Facet that controls whether the editor content DOM is editable.

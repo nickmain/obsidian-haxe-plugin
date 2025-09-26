@@ -1,10 +1,12 @@
 package epistem;
 
+import codemirror.ViewUpdate;
 import js.html.Event;
 import codemirror.BlockInfo;
 import codemirror.EditorView;
 import codemirror.EditorState;
 import codemirror.CodeMirrorView;
+import codemirror.Extension;
 import obsidian.Notice;
 import obsidian.Menu;
 import haxe.extern.EitherType;
@@ -20,6 +22,7 @@ class SampleView extends ItemView {
 
     var state: SampleViewState;
     var cmEditor: Null<EditorView>;
+    var updateListener: Null<Extension>;
 
     public function new(leaf: WorkspaceLeaf) {
         super(leaf);
@@ -99,11 +102,20 @@ class SampleView extends ItemView {
         return super.setState(state, result);
     }
 
+    private function handleEditorUpdate(update: ViewUpdate) {
+        update.changes.iterChanges((fromA, toA, fromB, toB, inserted) -> {
+            trace('[$fromA-$toA] [$fromB-$toB] ${inserted.toString()}');
+        });
+    }
+
     function buildUI() {
         // contentEl.innerHTML = "";
         // contentEl.innerHTML = '<p>Hello from SampleView!</p><p>State: ${state.count}</p>';
 
         if (contentEl.hasChildNodes()) { return; }
+
+        final updateListener = EditorView.updateListener.of(handleEditorUpdate);
+        this.updateListener = updateListener;
 
         final fontTheme = EditorView.theme({
             // Apply specifically to the content
@@ -128,7 +140,8 @@ class SampleView extends ItemView {
                             "click": lineNumberClick
                         }
                     }),
-                    fontTheme
+                    fontTheme,
+                    updateListener
                 ]
             }),
             parent: contentEl

@@ -41,4 +41,4 @@ extern class Prec {
     near the end of the extension order.
     */
     static final lowest: (ext: Extension) -> Extension;
-};
+}
