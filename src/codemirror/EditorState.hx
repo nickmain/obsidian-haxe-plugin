@@ -1,5 +1,6 @@
 package codemirror;
 
+import codemirror.ChangeSet.ChangeSpec;
 import haxe.extern.EitherType;
 
 /**
@@ -52,26 +53,26 @@ extern class EditorState {
     */
     function replaceSelection(text: EitherType<String, Text>): TransactionSpec;
 
-    // /**
-    // Create a set of changes and a new selection by running the given
-    // function for each range in the active selection. The function
-    // can return an optional set of changes (in the coordinate space
-    // of the start document), plus an updated range (in the coordinate
-    // space of the document produced by the call's own changes). This
-    // method will merge all the changes and ranges into a single
-    // changeset and selection, and return it as a [transaction
-    // spec](https://codemirror.net/6/docs/ref/#state.TransactionSpec), which can be passed to
-    // [`update`](https://codemirror.net/6/docs/ref/#state.EditorState.update).
-    // */
-    // changeByRange(f: (range: SelectionRange) => {
-    //     range: SelectionRange;
-    //     changes?: ChangeSpec;
-    //     effects?: StateEffect<any> | readonly StateEffect<any>[];
-    // }): {
-    //     changes: ChangeSet;
-    //     selection: EditorSelection;
-    //     effects: readonly StateEffect<any>[];
-    // };
+    /**
+    Create a set of changes and a new selection by running the given
+    function for each range in the active selection. The function
+    can return an optional set of changes (in the coordinate space
+    of the start document), plus an updated range (in the coordinate
+    space of the document produced by the call's own changes). This
+    method will merge all the changes and ranges into a single
+    changeset and selection, and return it as a [transaction
+    spec](https://codemirror.net/6/docs/ref/#state.TransactionSpec), which can be passed to
+    [`update`](https://codemirror.net/6/docs/ref/#state.EditorState.update).
+    */
+    function changeByRange(f: (range: SelectionRange) -> {
+        range: SelectionRange,
+        ?changes: ChangeSpec,
+        ?effects: EitherType<StateEffect<Any>, Array<StateEffect<Any>>>
+    }): {
+        changes: ChangeSet,
+        selection: EditorSelection,
+        effects: Array<StateEffect<Any>>
+    };
 
     // /**
     // Create a [change set](https://codemirror.net/6/docs/ref/#state.ChangeSet) from the given change
