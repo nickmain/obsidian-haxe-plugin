@@ -21,4 +21,12 @@ extern class CodeMirrorView {
 
     /** Create a line number gutter extension. */
     static function lineNumbers(?config: LineNumberConfig): Extension;
+
+    /**
+    Facet used for registering keymaps.
+    You can add multiple keymaps to an editor. Their priorities determine their
+    precedence (the ones specified early or with high priority get checked first).
+    When a handler has returned `true` for a given key, no further handlers are called.
+    */
+    static final keymap: Facet<Array<KeyBinding>, Array<Array<KeyBinding>>>;
 }

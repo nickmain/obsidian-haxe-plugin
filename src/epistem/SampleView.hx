@@ -1,5 +1,8 @@
 package epistem;
 
+import codemirror.CodeMirror;
+import js.lib.RegExp;
+import codemirror.Autocomplete;
 import codemirror.ViewUpdate;
 import js.html.Event;
 import codemirror.BlockInfo;
@@ -23,11 +26,13 @@ class SampleView extends ItemView {
     var state: SampleViewState;
     var cmEditor: Null<EditorView>;
     var updateListener: Null<Extension>;
+    var completionRegex: RegExp;
 
     public function new(leaf: WorkspaceLeaf) {
         super(leaf);
         icon = "aperture";
         state = { count: 0 };
+        completionRegex = new RegExp("froot");
     }
 
     override function onPaneMenu(menu: Menu, source: EitherType<PaneMenuSource, String>) {
@@ -81,6 +86,8 @@ class SampleView extends ItemView {
             buildUI();
         });
 
+        // trace(CodeMirror);
+
         return Promise.resolve();
     }
 
@@ -105,12 +112,32 @@ class SampleView extends ItemView {
     private function handleEditorUpdate(update: ViewUpdate) {
         if (update.selectionSet) {
             final selection = update.view.state.selection.main;
-            trace('Selection: ${selection.from}-${selection.to}');
+            // trace('Selection: ${selection.from}-${selection.to}');
         }
 
         update.changes.iterChanges((fromA, toA, fromB, toB, inserted) -> {
-            trace('[$fromA-$toA] [$fromB-$toB] ${inserted.toString()}');
+            // trace('[$fromA-$toA] [$fromB-$toB] ${inserted.toString()}');
         });
+    }
+
+    private function handleCompletions(context: CompletionContext): Null<EitherType<CompletionResult, Promise<Null<CompletionResult>>>> {
+        // trace(context.pos);
+
+        final match = context.matchBefore(completionRegex);
+        if (match != null) {
+            trace("here");
+            return {
+                from: match.from,
+                filter: false,
+                options: [
+                    { label: "Apple", info: "Foo bar", type: "constant" },
+                    { label: "Banana", info: "Bendy Yellow", type: "text" },
+                    { label: "Orange", type: "text" }
+                ]
+            };
+        }
+
+        return null;
     }
 
     function buildUI() {
@@ -121,6 +148,9 @@ class SampleView extends ItemView {
 
         final updateListener = EditorView.updateListener.of(handleEditorUpdate);
         this.updateListener = updateListener;
+
+        final config = new CompletionConfig(true, [handleCompletions], 10, true);
+        final completionExtension = Autocomplete.autocompletion(config);
 
         final fontTheme = EditorView.theme({
             // Apply specifically to the content
@@ -146,7 +176,8 @@ class SampleView extends ItemView {
                         }
                     }),
                     fontTheme,
-                    updateListener
+                    updateListener,
+                    completionExtension
                 ]
             }),
             parent: contentEl

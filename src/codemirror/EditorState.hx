@@ -4,6 +4,16 @@ import codemirror.ChangeSet.ChangeSpec;
 import haxe.extern.EitherType;
 
 /**
+Subtype of [`Command`](https://codemirror.net/6/docs/ref/#view.Command) that doesn't require access
+to the actual editor view. Mostly useful to define commands that
+can be run and tested outside of a browser environment.
+*/
+typedef StateCommand = (target: {
+    state: EditorState,
+    dispatch: (transaction: Transaction) -> Void
+}) -> Bool;
+
+/**
 The editor state class is a persistent (immutable) data structure.
 To update a state, you [create](https://codemirror.net/6/docs/ref/#state.EditorState.update) a
 [transaction](https://codemirror.net/6/docs/ref/#state.Transaction), which produces a _new_ state
