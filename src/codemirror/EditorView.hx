@@ -1,5 +1,6 @@
 package codemirror;
 
+import haxe.extern.EitherType;
 import epistem.js.JSObjectMap;
 import codemirror.Style.StyleSpec;
 import js.html.Element;
@@ -526,36 +527,38 @@ extern class EditorView {
     // */
     // static clickAddsSelectionRange: Facet<(event: MouseEvent) => boolean, readonly ((event: MouseEvent) => boolean)[]>;
 
-    // /**
-    // A facet that determines which [decorations](https://codemirror.net/6/docs/ref/#view.Decoration)
-    // are shown in the view. Decorations can be provided in two
-    // ways—directly, or via a function that takes an editor view.
+    /**
+    A facet that determines which [decorations](https://codemirror.net/6/docs/ref/#view.Decoration)
+    are shown in the view. Decorations can be provided in two
+    ways—directly, or via a function that takes an editor view.
 
-    // Only decoration sets provided directly are allowed to influence
-    // the editor's vertical layout structure. The ones provided as
-    // functions are called _after_ the new viewport has been computed,
-    // and thus **must not** introduce block widgets or replacing
-    // decorations that cover line breaks.
+    Only decoration sets provided directly are allowed to influence
+    the editor's vertical layout structure. The ones provided as
+    functions are called _after_ the new viewport has been computed,
+    and thus **must not** introduce block widgets or replacing
+    decorations that cover line breaks.
 
-    // If you want decorated ranges to behave like atomic units for
-    // cursor motion and deletion purposes, also provide the range set
-    // containing the decorations to
-    // [`EditorView.atomicRanges`](https://codemirror.net/6/docs/ref/#view.EditorView^atomicRanges).
-    // */
-    // static decorations: Facet<DecorationSet | ((view: EditorView) => DecorationSet), readonly (DecorationSet | ((view: EditorView) => DecorationSet))[]>;
+    If you want decorated ranges to behave like atomic units for
+    cursor motion and deletion purposes, also provide the range set
+    containing the decorations to
+    [`EditorView.atomicRanges`](https://codemirror.net/6/docs/ref/#view.EditorView^atomicRanges).
+    */
+    static final decorations: Facet<EitherType<DecorationSet, ((view: EditorView) -> DecorationSet)>,
+                                       Array<EitherType<DecorationSet, ((view: EditorView) -> DecorationSet)>>>;
 
-    // /**
-    // Used to provide ranges that should be treated as atoms as far as
-    // cursor motion is concerned. This causes methods like
-    // [`moveByChar`](https://codemirror.net/6/docs/ref/#view.EditorView.moveByChar) and
-    // [`moveVertically`](https://codemirror.net/6/docs/ref/#view.EditorView.moveVertically) (and the
-    // commands built on top of them) to skip across such regions when
-    // a selection endpoint would enter them. This does _not_ prevent
-    // direct programmatic [selection
-    // updates](https://codemirror.net/6/docs/ref/#state.TransactionSpec.selection) from moving into such
-    // regions.
-    // */
-    // static atomicRanges: Facet<(view: EditorView) => _codemirror_state.RangeSet<any>, readonly ((view: EditorView) => _codemirror_state.RangeSet<any>)[]>;
+    /**
+    Used to provide ranges that should be treated as atoms as far as
+    cursor motion is concerned. This causes methods like
+    [`moveByChar`](https://codemirror.net/6/docs/ref/#view.EditorView.moveByChar) and
+    [`moveVertically`](https://codemirror.net/6/docs/ref/#view.EditorView.moveVertically) (and the
+    commands built on top of them) to skip across such regions when
+    a selection endpoint would enter them. This does _not_ prevent
+    direct programmatic [selection
+    updates](https://codemirror.net/6/docs/ref/#state.TransactionSpec.selection) from moving into such
+    regions.
+    */
+    static final atomicRanges: Facet<(view: EditorView) -> RangeSet<Any>,
+                                     Array<(view: EditorView) -> RangeSet<Any>>>;
 
     // /**
     // When range decorations add a `unicode-bidi: isolate` style, they

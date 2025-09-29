@@ -86,8 +86,6 @@ class SampleView extends ItemView {
             buildUI();
         });
 
-        // trace(CodeMirror);
-
         return Promise.resolve();
     }
 
