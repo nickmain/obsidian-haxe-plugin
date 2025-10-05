@@ -1,5 +1,7 @@
 package codemirror;
 
+import haxe.extern.EitherType;
+
 /**
 Each range is associated with a value, which must inherit from
 this class.
@@ -40,13 +42,13 @@ extern abstract class RangeValue {
     /**
     Create a [range](https://codemirror.net/6/docs/ref/#state.Range) with this value.
     */
-    function range<T>(from: Int, ?to: Int): Range<T>;
+    function range<T: RangeValue>(from: Int, ?to: Int): Range<T>;
 }
 
 /**
 A range associates a value with a range of positions.
 */
-extern class Range<T: RangeValue<T>> {
+extern class Range<T: RangeValue> {
     /**
     The range's start position.
     */
@@ -167,62 +169,69 @@ structure.
 */
 extern class RangeSet<T: RangeValue> {
     private function new();
-    
+
     /**
     The number of ranges in the set.
     */
-    get size(): number;
+    final size: Int;
     /**
     Update the range set, optionally adding new ranges or filtering
     out existing ones.
-    
+
     (Note: The type parameter is just there as a kludge to work
     around TypeScript variance issues that prevented `RangeSet<X>`
     from being a subtype of `RangeSet<Y>` when `X` is a subtype of
     `Y`.)
     */
-    update<U extends T>(updateSpec: RangeSetUpdate<U>): RangeSet<T>;
+    function update<U: T>(updateSpec: RangeSetUpdate<U>): RangeSet<T>;
+
     /**
     Map this range set through a set of changes, return the new set.
     */
-    map(changes: ChangeDesc): RangeSet<T>;
+    function map(changes: ChangeDesc): RangeSet<T>;
+
     /**
     Iterate over the ranges that touch the region `from` to `to`,
     calling `f` for each. There is no guarantee that the ranges will
     be reported in any specific order. When the callback returns
     `false`, iteration stops.
     */
-    between(from: number, to: number, f: (from: number, to: number, value: T) => void | false): void;
+    function between(from: Int, to: Int, f: (from: Int, to: Int, value: T) -> Null<Bool>): Void;
+
     /**
     Iterate over the ranges in this set, in order, including all
     ranges that end at or after `from`.
     */
-    iter(from?: number): RangeCursor<T>;
+    function iter(?from: Int): RangeCursor<T>;
+
     /**
     Iterate over the ranges in a collection of sets, in order,
     starting from `from`.
     */
-    static iter<T extends RangeValue>(sets: readonly RangeSet<T>[], from?: number): RangeCursor<T>;
+    static function iter<T: RangeValue>(sets: Array<RangeSet<T>>, ?from: Int): RangeCursor<T>;
+
     /**
     Iterate over two groups of sets, calling methods on `comparator`
     to notify it of possible differences.
     */
-    static compare<T extends RangeValue>(oldSets: readonly RangeSet<T>[], newSets: readonly RangeSet<T>[], 
-    /**
-    This indicates how the underlying data changed between these
-    ranges, and is needed to synchronize the iteration.
-    */
-    textDiff: ChangeDesc, comparator: RangeComparator<T>, 
-    /**
-    Can be used to ignore all non-point ranges, and points below
-    the given size. When -1, all ranges are compared.
-    */
-    minPointSize?: number): void;
+    static function compare<T: RangeValue>(oldSets: Array<RangeSet<T>>, newSets: Array<RangeSet<T>>,
+        /**
+        This indicates how the underlying data changed between these
+        ranges, and is needed to synchronize the iteration.
+        */
+        textDiff: ChangeDesc, comparator: RangeComparator<T>,
+        /**
+        Can be used to ignore all non-point ranges, and points below
+        the given size. When -1, all ranges are compared.
+        */
+        ?minPointSize: Int): Void;
+
     /**
     Compare the contents of two groups of range sets, returning true
     if they are equivalent in the given range.
     */
-    static eq<T extends RangeValue>(oldSets: readonly RangeSet<T>[], newSets: readonly RangeSet<T>[], from?: number, to?: number): boolean;
+    static function eq<T: RangeValue>(oldSets: Array<RangeSet<T>>, newSets: Array<RangeSet<T>>, ?from: Int, ?to: Int): Bool;
+
     /**
     Iterate over a group of range sets at the same time, notifying
     the iterator about the ranges covering every given piece of
@@ -230,12 +239,13 @@ extern class RangeSet<T: RangeValue> {
     [`SpanIterator.span`](https://codemirror.net/6/docs/ref/#state.SpanIterator.span)) at the end
     of the iteration.
     */
-    static spans<T extends RangeValue>(sets: readonly RangeSet<T>[], from: number, to: number, iterator: SpanIterator<T>, 
-    /**
-    When given and greater than -1, only points of at least this
-    size are taken into account.
-    */
-    minPointSize?: number): number;
+    static function spans<T: RangeValue>(sets: Array<RangeSet<T>>, from: Int, to: Int, iterator: SpanIterator<T>,
+        /**
+        When given and greater than -1, only points of at least this
+        size are taken into account.
+        */
+        ?minPointSize: Int): Int;
+
     /**
     Create a range set for the given range or array of ranges. By
     default, this expects the ranges to be _sorted_ (by start
@@ -243,11 +253,12 @@ extern class RangeSet<T: RangeValue> {
     `value.startSide`). You can pass `true` as second argument to
     cause the method to sort them.
     */
-    static of<T extends RangeValue>(ranges: readonly Range<T>[] | Range<T>, sort?: boolean): RangeSet<T>;
+    static function of<T: RangeValue>(ranges: EitherType<Array<Range<T>>, Range<T>>, ?sort: Bool): RangeSet<T>;
+
     /**
     The empty set of ranges.
     */
-    static empty: RangeSet<any>;
+    static final empty: RangeSet<RangeValue>;
 }
 
 /**
@@ -255,32 +266,17 @@ A range set builder is a data structure that helps build up a
 [range set](https://codemirror.net/6/docs/ref/#state.RangeSet) directly, without first allocating
 an array of [`Range`](https://codemirror.net/6/docs/ref/#state.Range) objects.
 */
-declare class RangeSetBuilder<T extends RangeValue> {
-    private chunks;
-    private chunkPos;
-    private chunkStart;
-    private last;
-    private lastFrom;
-    private lastTo;
-    private from;
-    private to;
-    private value;
-    private maxPoint;
-    private setMaxPoint;
-    private nextLayer;
-    private finishChunk;
-    /**
-    Create an empty builder.
-    */
-    constructor();
-    /**
-    Add a range. Ranges should be added in sorted (by `from` and
-    `value.startSide`) order.
-    */
-    add(from: number, to: number, value: T): void;
+@:jsRequire("@codemirror/state", "RangeSetBuilder")
+extern class RangeSetBuilder<T: RangeValue> {
+    /** Create an empty builder. */
+    function new();
+
+    /** Add a range. Ranges should be added in sorted (by `from` and `value.startSide`) order. */
+    function add(from: Int, to: Int, value: T): Void;
+
     /**
     Finish the range set. Returns the new set. The builder can't be
     used anymore after this has been called.
     */
-    finish(): RangeSet<T>;
+    function finish(): RangeSet<T>;
 }

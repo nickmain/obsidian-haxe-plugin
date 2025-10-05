@@ -3,6 +3,9 @@ package codemirror;
 import haxe.extern.EitherType;
 import epistem.js.JSObjectMap;
 import codemirror.Style.StyleSpec;
+import codemirror.Decoration.DecorationSet;
+import codemirror.Range.RangeValue;
+import codemirror.Range.RangeSet;
 import js.html.Element;
 
 /**
@@ -557,8 +560,8 @@ extern class EditorView {
     updates](https://codemirror.net/6/docs/ref/#state.TransactionSpec.selection) from moving into such
     regions.
     */
-    static final atomicRanges: Facet<(view: EditorView) -> RangeSet<Any>,
-                                     Array<(view: EditorView) -> RangeSet<Any>>>;
+    static final atomicRanges: Facet<(view: EditorView) -> RangeSet<RangeValue>,
+                                     Array<(view: EditorView) -> RangeSet<RangeValue>>>;
 
     // /**
     // When range decorations add a `unicode-bidi: isolate` style, they
